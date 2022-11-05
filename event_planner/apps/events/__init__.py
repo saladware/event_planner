@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from ...db import get_db
 from . import scheams, models
-
+from .. import users
 
 event_router = APIRouter(prefix='/event')
 
@@ -15,7 +15,7 @@ def get_event(event_id: int, db: Session = Depends(get_db)):
 
 
 @event_router.post('/', response_model=scheams.Event)
-def create_event(event_data: scheams.CreateEvent, db: Session = Depends(get_db)):
+def create_event(event_data: scheams.CreateEvent, db: Session = Depends(get_db), user: users.models.User = Depends(users.get_current_user)):
     event = models.Event(**event_data.dict())
     db.add(event)
     db.commit()

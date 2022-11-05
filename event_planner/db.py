@@ -10,8 +10,8 @@ Base = declarative_base()
 SessionLocal = sessionmaker(bind=engine)
 
 
-def get_db() -> Session:
-    db = SessionLocal()
+def get_db():
+    db: Session = SessionLocal()
     try:
         yield db
     finally:
