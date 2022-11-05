@@ -14,6 +14,7 @@ class CreateEvent(BaseEvent):
 
 class Event(BaseEvent):
     id: int
+    author_id: str
 
     class Config:
         orm_mode = True

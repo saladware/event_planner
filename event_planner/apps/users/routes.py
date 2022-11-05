@@ -35,7 +35,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = 
 
 
 @user_router.post('/', response_model=schemas.User)
-async def create_user(user_data: schemas.CreateUser, db: Session = Depends(get_db)):
+async def register_user(user_data: schemas.CreateUser, db: Session = Depends(get_db)):
     if db.query(models.User).get(user_data.username) is not None:
         raise HTTPException(403, 'Is already exists')
     user = models.User(**user_data.dict(exclude={'password'}), hashed_password=hash_password(user_data.password))

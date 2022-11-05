@@ -29,11 +29,6 @@ def get_user(db: Session, username) -> schemas.User | None:
         return schemas.User.from_orm(user)
 
 
-def decode_token(token: str):
-    user = get_user(next(get_db()), token)
-    return user
-
-
 def authenticate_user(db: Session, username: str, password: str):
     user = get_user(db, username)
     if user is None:
