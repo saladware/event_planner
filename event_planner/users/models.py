@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, BigInteger
 
-from ...db import Base
+from event_planner.db import Base
 
 
 class User(Base):

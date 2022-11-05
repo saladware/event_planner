@@ -7,8 +7,8 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from . import schemas, models
-from ...config import ALGORITHM, SECRET_KEY
-from ...db import get_db
+from ..config import ALGORITHM, SECRET_KEY
+from ..db import get_db
 
 oauth_scheme = OAuth2PasswordBearer('/user/token')
 
