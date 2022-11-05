@@ -6,8 +6,8 @@ from sqlalchemy.orm import Session
 
 from . import schemas, models
 from .auth import hash_password, get_current_user, create_access_token, authenticate_user
-from ...config import ACCESS_TOKEN_EXPIRE_MINUTES
-from ...db import get_db
+from ..config import ACCESS_TOKEN_EXPIRE_MINUTES
+from ..db import get_db
 
 
 user_router = APIRouter(prefix='/user', tags=['user'])

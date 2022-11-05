@@ -1,8 +1,8 @@
 from sqlalchemy.orm import relationship
-
-from ...db import Base
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from sqlalchemy.sql import func
+
+from ..db import Base
 
 
 class Event(Base):
