@@ -12,6 +12,12 @@ class CreateEvent(BaseEvent):
     ...
 
 
+class UpdateEvent(BaseEvent):
+    name: str | None
+    description: str | None
+    planned_at: datetime | None
+
+
 class Event(BaseEvent):
     id: int
     author_id: str

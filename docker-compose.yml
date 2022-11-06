@@ -8,3 +8,15 @@ services:
     restart: always
     ports:
       - "5432:5432"
+  app:
+    links:
+      - "db:db"
+    env_file:
+      - .env
+    build: .
+    ports:
+      - "${EVENT_PORT}:${EVENT_PORT}"
+
+networks:
+  default:
+    name: "db"
