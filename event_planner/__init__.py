@@ -6,8 +6,8 @@ TODO: run application in docker with uvloop
 
 from fastapi import FastAPI
 from .db import Base, engine
-from event_planner.events import event_router
-from event_planner.users import user_router
+from .events import event_router
+from .users import user_router
 
 
 app = FastAPI()
