@@ -24,3 +24,7 @@ class Event(BaseEvent):
 
     class Config:
         orm_mode = True
+
+
+class EventList(BaseModel):
+    events: list[Event]
