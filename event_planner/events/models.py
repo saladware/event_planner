@@ -1,3 +1,5 @@
+import datetime
+
 from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from sqlalchemy.sql import func
@@ -13,6 +15,7 @@ class Event(Base):
     description = Column(String)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    remind_at: datetime.datetime = Column(DateTime)
     planned_at = Column(DateTime)
     author_id = Column(String, ForeignKey("users.username"))
     author = relationship("User")

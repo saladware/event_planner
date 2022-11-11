@@ -8,7 +8,7 @@ from . import schemas, models
 from .auth import hash_password, get_current_user, create_access_token, authenticate_user
 from ..config import ACCESS_TOKEN_EXPIRE_MINUTES
 from ..db import get_db
-
+from ..bot import get_link
 
 user_router = APIRouter(prefix='/user', tags=['user'])
 
@@ -20,11 +20,12 @@ async def show_me(current_user: schemas.BaseUser = Depends(get_current_user)):
 
 @user_router.post("/token", response_model=schemas.Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
-    user = authenticate_user(db, form_data.username, form_data.password)
-    if not user:
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if user is None:
+        url = await get_link()
         raise HTTPException(
             status_code=401,
-            detail="Incorrect username or password",
+            detail=f"Incorrect username or password. Maybe user not verified. Pls register user and verify it at {url}",
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

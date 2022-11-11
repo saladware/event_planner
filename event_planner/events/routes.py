@@ -39,6 +39,10 @@ def get_event_by_id(event_id: int, db: Session = Depends(get_db), user: User = D
 
 @event_router.post('/', response_model=schemas.Event)
 def create_event(event_src: schemas.CreateEvent, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    if event_src.planned_at <= datetime.datetime.utcnow() + datetime.timedelta(hours=2):
+        raise HTTPException(404, 'Event cannot be scheduled 2 hours before it starts')
+    if event_src.remind_at is None:
+        event_src.remind_at = event_src.planned_at - datetime.timedelta(hours=2)
     event = models.Event(**event_src.dict(), author_id=user.username)
     db.add(event)
     db.commit()

@@ -10,3 +10,5 @@ app.include_router(event_router)
 app.include_router(user_router)
 
 Base.metadata.create_all(engine)
+
+# TODO: settings, uvloop, config

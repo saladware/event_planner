@@ -2,6 +2,7 @@ import os
 
 import dotenv
 
+from pydantic import BaseSettings
 
 dotenv.load_dotenv()
 
@@ -18,3 +19,5 @@ DB_HOST = os.getenv('DB_HOST', 'db')
 DB_PORT = os.getenv('DB_PORT', '5432')
 DB_URI = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
+# telegram
+BOT_TOKEN = os.getenv('BOT_TOKEN')
