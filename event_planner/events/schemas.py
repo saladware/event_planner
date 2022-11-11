@@ -6,6 +6,7 @@ class BaseEvent(BaseModel):
     name: str
     description: str
     planned_at: datetime
+    remind_at: datetime | None
 
 
 class CreateEvent(BaseEvent):
@@ -21,6 +22,11 @@ class UpdateEvent(BaseEvent):
 class Event(BaseEvent):
     id: int
     author_id: str
+    created_at: datetime
 
     class Config:
         orm_mode = True
+
+
+class EventList(BaseModel):
+    events: list[Event]

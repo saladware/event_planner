@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 class BaseUser(BaseModel):
     username: str
-    telegram_id: int
 
 
 class CreateUser(BaseUser):
@@ -11,6 +10,7 @@ class CreateUser(BaseUser):
 
 
 class User(BaseUser):
+    telegram_id: int
     hashed_password: str
 
     class Config:

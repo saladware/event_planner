@@ -1,18 +1,11 @@
-"""
-TODO: migrations
-TODO: telegram integration
-TODO: run application in docker with uvloop
-"""
-
-from fastapi import FastAPI
-from .db import Base, engine
-from .events import event_router
-from .users import user_router
+import asyncio
 
 
-app = FastAPI()
+from .app import app
+from .bot import run
 
-app.include_router(event_router)
-app.include_router(user_router)
 
-Base.metadata.create_all(engine)
+@app.on_event("startup")
+async def startup_event():
+    run(asyncio.get_running_loop())
+

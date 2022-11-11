@@ -23,22 +23,22 @@ def hash_password(password):
     return pwd_context.hash(password)
 
 
-def get_user(db: Session, username) -> schemas.User | None:
-    user = db.query(models.User).get(username)
-    if user is not None:
-        return schemas.User.from_orm(user)
+def get_user(username, db: Session) -> models.User | None:
+    return db.query(models.User).get(username)
 
 
-def authenticate_user(db: Session, username: str, password: str):
-    user = get_user(db, username)
-    if user is None:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
+def authenticate_user(username: str, password: str, db: Session) -> models.User | None:
+    user = get_user(username, db)
+    auth_conditions = [
+        user is not None,
+        verify_password(password, user.hashed_password),
+        user.is_verified()
+    ]
+    if all(auth_conditions):
+        return user
 
 
-def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(get_db)):
+def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(get_db)) -> models.User:
     credentials_exception = HTTPException(
         status_code=401,
         detail="Could not validate credentials",
@@ -52,13 +52,13 @@ def get_current_user(token: str = Depends(oauth_scheme), db: Session = Depends(g
         token_data = schemas.TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    user = get_user(db, username=token_data.username)
+    user = get_user(token_data.username, db)
     if user is None:
         raise credentials_exception
     return user
 
 
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+def create_access_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
