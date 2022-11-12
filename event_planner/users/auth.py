@@ -10,6 +10,7 @@ from . import schemas, models
 from ..config import ALGORITHM, SECRET_KEY
 from ..db import get_db
 
+
 oauth_scheme = OAuth2PasswordBearer('/user/token')
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')

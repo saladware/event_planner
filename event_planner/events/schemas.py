@@ -17,6 +17,7 @@ class UpdateEvent(BaseEvent):
     name: str | None
     description: str | None
     planned_at: datetime | None
+    remind_at: datetime | None
 
 
 class Event(BaseEvent):
