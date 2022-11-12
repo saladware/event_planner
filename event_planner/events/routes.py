@@ -2,12 +2,14 @@ import datetime
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+import pytz
 
 from . import schemas, models
 from ..db import get_db
 from ..users import User, get_current_user
 
 event_router = APIRouter(prefix='/event', tags=['event'])
+utc = pytz.UTC
 
 
 @event_router.get('/{event_date: date}', response_model=schemas.EventList)
@@ -39,10 +41,17 @@ def get_event_by_id(event_id: int, db: Session = Depends(get_db), user: User = D
 
 @event_router.post('/', response_model=schemas.Event)
 def create_event(event_src: schemas.CreateEvent, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    if event_src.planned_at <= datetime.datetime.utcnow() + datetime.timedelta(hours=2):
-        raise HTTPException(404, 'Event cannot be scheduled 2 hours before it starts')
+    now = datetime.datetime.now(tz=event_src.planned_at.tzinfo)
+    if event_src.planned_at < now:
+        raise HTTPException(400, f'You cannot schedule an event that has already passed (now {now})')
     if event_src.remind_at is None:
         event_src.remind_at = event_src.planned_at - datetime.timedelta(hours=2)
+        if event_src.planned_at <= now + datetime.timedelta(hours=2):
+            raise HTTPException(400, 'Event cannot be scheduled 2 hours before it starts')
+    if event_src.remind_at < now:
+        raise HTTPException(400, 'cannot be  reminded about an event in the past')
+    if event_src.remind_at > event_src.planned_at:
+        raise HTTPException(400, 'Cannot be reminded of an event after it has ended')
     event = models.Event(**event_src.dict(), author_id=user.username)
     db.add(event)
     db.commit()

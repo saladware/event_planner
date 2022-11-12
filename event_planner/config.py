@@ -2,12 +2,11 @@ import os
 
 import dotenv
 
-from pydantic import BaseSettings
 
 dotenv.load_dotenv()
 
 # user auth
-SECRET_KEY = os.getenv('SECRET_KEY')  # openssl rand -hex 32
+SECRET_KEY = os.getenv('SECRET_KEY')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
