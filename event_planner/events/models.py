@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Boolean
 from sqlalchemy.sql import func
 
 from ..db import Base
@@ -19,6 +19,7 @@ class Event(Base):
     planned_at = Column(DateTime)
     author_id = Column(String, ForeignKey("users.username"))
     author = relationship("User")
+    is_happened = Column(Boolean, default=False)
 
 
 

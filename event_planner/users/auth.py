@@ -30,12 +30,9 @@ def get_user(username, db: Session) -> models.User | None:
 
 def authenticate_user(username: str, password: str, db: Session) -> models.User | None:
     user = get_user(username, db)
-    auth_conditions = [
-        user is not None,
-        verify_password(password, user.hashed_password),
-        user.is_verified()
-    ]
-    if all(auth_conditions):
+    if user is None:
+        return None
+    if verify_password(password, user.hashed_password) and user.is_verified():
         return user
 
 

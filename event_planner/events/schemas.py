@@ -24,6 +24,7 @@ class Event(BaseEvent):
     id: int
     author_id: str
     created_at: datetime
+    is_happened: bool
 
     class Config:
         orm_mode = True

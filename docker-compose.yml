@@ -7,13 +7,14 @@ services:
       - .env
     restart: always
     ports:
-      - "5432:5432"
+      - "5432:${DB_PORT}"
   app:
     links:
-      - "db:db"
+      - "db:${DB_HOST}"
     env_file:
       - .env
     build: .
     ports:
       - "${EVENT_PORT}:${EVENT_PORT}"
+    restart: always
 
