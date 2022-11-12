@@ -23,6 +23,7 @@ To start a project, you need to configure it. To do this, you need to define the
 | `DB_PORT`           | database port (in docker container )    | recommend `5432`                                                                |
 | `SECRET_KEY`        | secret key for generation user tokens   | copy from `openssl rand -hex 32` and paste                                      |
 | `BOT_TOKEN`         | telegram bot token                      | create telegram bot at [@BotFather](https://t.me/BotFather) and paste its token |
+
 Of course there is support .env files. You can just rename the .env.example file to .env and edit it with your data (it's better not to check what will happen if you don't change this file)
 
 ## How to run
