@@ -39,8 +39,7 @@ docker-compose up --build
 
 ### Create user
 To start working with the API, you need to create a user. we will send a post request to /users with a username and password. The username must be @username of your telegram accaunt
-> To understand the actual use of the api, python examples will be used below, but for convenience you can perform all the same actions from swagger at http:
-> //127.0.0.1:8000/docs
+> To understand the actual use of the api, python examples will be used below, but for convenience you can perform all the same actions from swagger at http://127.0.0.1:8000/docs
 ```python
 import requests
 import json
